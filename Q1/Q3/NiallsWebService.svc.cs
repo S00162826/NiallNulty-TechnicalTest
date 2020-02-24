@@ -15,6 +15,8 @@ namespace Q3
     {
         public StatusModel DisplayResults()
         {
+            //used later to find quotes in XML
+            string quote = "'";
 
             var status = new StatusModel()
             {
@@ -31,13 +33,49 @@ namespace Q3
             correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/CorrectFile.xml");
 
             //loading in xml file A
-            correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileA.xml");
+            aDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileA.xml");
 
             //loading in xml file B
-            correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileB.xml");
+            bDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileB.xml");
 
             //loading in xml file C
-            correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileC.xml");
+            cDoc.LoadXml(@"<InputDocument>
+                                  <DeclarationList>
+		                                   <Declaration Command='DEFAULT' Version='5.13'>
+                                            <DeclarationHeader>
+                                              <Jurisdiction>IE</Jurisdiction>
+                                               <CWProcedure>IMPORT</CWProcedure>
+                                                   <DeclarationDestination>CUSTOMSWAREIE</DeclarationDestination>
+                                                    <DocumentRef>71Q0019681</DocumentRef>
+                                     <SiteID>'DUB'</SiteID>
+                             <AccountCode>G0779837</AccountCode>
+                             </DeclarationHeader>
+                            </Declaration>
+                             </DeclarationList>
+                                </InputDocument>");
+
+            XmlNode b = bDoc.SelectSingleNode("/InputDocument/DeclarationList/Declaration/@Command");
+
+            //getting speecific node to check
+            XmlNode c = cDoc.SelectSingleNode("/InputDocument/DeclarationList/Declaration/DeclarationHeader/SiteID");
+
+            //if fileA matches the correct document, 0 is returned
+            if (aDoc.Value == correctDoc.Value)
+            {
+                status.statusResultA = 0;
+            }
+
+            //if file contains '', -1 is returned
+            if (b.OuterXml.ToString().Equals("Command='DEFAULT'"))
+            {
+                status.statusResultB = -1;
+            }
+
+            //if file SiteID contains '', -2 is returned
+            if (c.InnerText.StartsWith(quote) && cDoc.InnerText.EndsWith(quote))
+            {
+                status.statusResultC = -2; ;
+            }
 
             return status;
         }
