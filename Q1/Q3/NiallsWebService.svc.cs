@@ -19,8 +19,27 @@ namespace Q3
             var status = new StatusModel()
             {
                 //initial result is set to zero
-                statusResultA = 0;
+                statusResultA = 0
              };
+
+            XmlDocument correctDoc = new XmlDocument();
+            XmlDocument aDoc = new XmlDocument();
+            XmlDocument bDoc = new XmlDocument();
+            XmlDocument cDoc = new XmlDocument();
+
+            //loading in correct xml file
+            correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/CorrectFile.xml");
+
+            //loading in xml file A
+            correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileA.xml");
+
+            //loading in xml file B
+            correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileB.xml");
+
+            //loading in xml file C
+            correctDoc.Load("C:/Users/nnult/Desktop/NiallNulty-TechnicalTest/Q1/Q3/fileC.xml");
+
+            return status;
         }
     }
 }
